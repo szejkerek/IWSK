@@ -24,5 +24,15 @@ namespace RS_232
         {
             InitializeComponent();
         }
+
+        private void SendCommandButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
