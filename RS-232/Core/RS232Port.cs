@@ -5,24 +5,6 @@ using System.IO.Ports;
 
 public struct RS232Params
 {
-    public enum TerminatorType
-    {
-        None,
-        CR,
-        LF,
-        CRLF,
-        Custom
-    }
-
-    public static Dictionary<TerminatorType, string> Terminator = new Dictionary<TerminatorType, string>()
-    {
-        { TerminatorType.None, ""},
-        { TerminatorType.CR, "\r"},
-        { TerminatorType.LF, "\n"},
-        { TerminatorType.CRLF, "\r\n"},
-        { TerminatorType.Custom, ""},
-    };
-
     public string Port;
     public int BaudRateInBps;
     public int DataBitsCount;
