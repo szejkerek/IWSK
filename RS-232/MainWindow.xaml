@@ -145,9 +145,9 @@
                             <ComboBox Name="ParityDropdown"
                                       Margin="0, 0, 0, 10"
                                       SelectionChanged="ParityDropdown_SelectionChanged">
-                                <ComboBoxItem IsSelected="True">odd</ComboBoxItem>
-                                <ComboBoxItem>even</ComboBoxItem>
-                                <ComboBoxItem>none</ComboBoxItem>
+                                <ComboBoxItem IsSelected="True">Odd</ComboBoxItem>
+                                <ComboBoxItem>Even</ComboBoxItem>
+                                <ComboBoxItem>None</ComboBoxItem>
                             </ComboBox>
                             <TextBlock Text="BaudRateInBps"/>
                             <ComboBox Name="BaudRateDropdown"
@@ -217,7 +217,7 @@
                                 <ComboBoxItem IsSelected="True">XOnXOff</ComboBoxItem>
                                 <ComboBoxItem>RequestToSend</ComboBoxItem>
                                 <ComboBoxItem>RequestToSendXOnXOff</ComboBoxItem>
-                                <ComboBoxItem>NONE</ComboBoxItem>
+                                <ComboBoxItem>None</ComboBoxItem>
                             </ComboBox>
                             <TextBlock Text="Command"
                                        Margin="0, 10, 0, 0"/>
