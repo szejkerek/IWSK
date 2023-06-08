@@ -38,6 +38,11 @@ public class RS232Port
     SerialPort _serialPort = new SerialPort();
     Stopwatch _stopwatch = new Stopwatch(); 
 
+    public static string[] GetAvailablePorts()
+    {
+        return SerialPort.GetPortNames();
+    }
+
     public RS232Port(RS232Params config, SerialDataReceivedEventHandler onRecievedData)
     {
         _config = config;
