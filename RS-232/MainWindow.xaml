@@ -48,7 +48,7 @@
                     Width="100"
                     Height="30"
                     Content="Clear"
-                    Click="ClearButton_Click"/>
+                    Click="ClearButtonOnClick"/>
             </StackPanel>
             <StackPanel Grid.Column="1"
                     Grid.Row="3">
@@ -127,7 +127,7 @@
                                 Width="100"
                                 Content="Send"
                                 FontSize="13"
-                                Click="SendCommandButton_Click"/>
+                                Click="SendCommandButtonOnClick"/>
                         </StackPanel>
                         <StackPanel Grid.Column="4">
                             <TextBlock Text="Terminator"/>

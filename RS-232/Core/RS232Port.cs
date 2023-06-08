@@ -54,9 +54,4 @@ public class RS232Port
         _serialPort.Parity = config.Parity;
         _serialPort.DataReceived += onRecievedData;
     }
-
-    private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
 }
