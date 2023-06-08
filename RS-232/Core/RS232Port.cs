@@ -110,7 +110,7 @@ public class RS232Port
         {
             try
             {
-                output = _serialPort.ReadExisting();
+                output = _serialPort.ReadExisting() + Environment.NewLine;
                 return true;
             }
             catch (Exception)
