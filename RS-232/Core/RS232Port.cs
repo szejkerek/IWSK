@@ -37,6 +37,7 @@ public class RS232Port
     RS232Params _config;
     SerialPort _serialPort = new SerialPort();
     Stopwatch _stopwatch = new Stopwatch(); 
+    public bool IsOpen  => _serialPort.IsOpen; 
 
     public static string[] GetAvailablePorts()
     {
@@ -58,5 +59,67 @@ public class RS232Port
         _serialPort.Handshake = config.Handshake;
         _serialPort.Parity = config.Parity;
         _serialPort.DataReceived += onRecievedData;
+    }
+
+    public bool OpenPort()
+    {
+        try
+        {
+            _serialPort.Open();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }    
+    }
+    public bool ClosePort()
+    {
+        try
+        {
+            _serialPort.Close();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public bool SendData(string data)
+    {
+        if(IsOpen && !data.Equals(string.Empty) && data is not null)
+        {
+            try
+            {
+                _serialPort.Write(data);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }          
+        }
+
+        return false;
+    }
+
+    public bool ReadData(out string output)
+    {
+        if (IsOpen)
+        {
+            try
+            {
+                output = _serialPort.ReadExisting();
+                return true;
+            }
+            catch (Exception)
+            {
+                output = string.Empty;
+                return false;
+            }
+        }
+        output = string.Empty;
+        return false;
     }
 }
