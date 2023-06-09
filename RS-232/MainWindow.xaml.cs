@@ -21,7 +21,10 @@ namespace RS_232
     /// </summary>
     public partial class MainWindow : Window
     {
-        private RS232Params _params;
+        private RS232Params _config;
+
+        private RS232Port _port;
+
         private enum TerminatorType
         {
             None,
@@ -39,12 +42,24 @@ namespace RS_232
             { TerminatorType.Custom, ""},
         };
         private TerminatorType _terminator;
+        
 
         public MainWindow()
         {
             InitializeComponent();
             AddPorts();
             PopulateMembers();
+
+           _port = new RS232Port(config: _config, SerialDataReceivedEvent);
+
+        }
+
+        void SerialDataReceivedEvent(object sender, SerialDataReceivedEventArgs e)
+        {           
+            if(_port.ReadData(out string data))
+            {
+                TerminalTextbox.Text += data;
+            }
         }
 
         private void SendCommandButtonOnClick(object sender, RoutedEventArgs e)
@@ -54,12 +69,22 @@ namespace RS_232
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ChangeStateOfInputs(enable: false);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            ChangeStateOfInputs(enable: true);
+        }
 
+        void ChangeStateOfInputs(bool enable)
+        {
+            PortDropdown.IsEnabled = enable;
+            BitNumberDropdown.IsEnabled = enable;
+            StopBitDropdown.IsEnabled = enable;
+            ParityDropdown.IsEnabled = enable;
+            BaudRateDropdown.IsEnabled = enable;
+            FlowControlDropdown.IsEnabled = enable;
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -72,7 +97,7 @@ namespace RS_232
             string? port = PortDropdown.SelectedItem.ToString();
             if (port is null)
                 return;
-            _params.Port = port;
+            _config.Port = port;
         }
 
         private void BitNumberDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,7 +105,7 @@ namespace RS_232
             string? bitNumber = ((ComboBoxItem)BitNumberDropdown.SelectedItem)?.Content?.ToString();
             if (bitNumber is null)
                 return;
-            _params.DataBitsCount = int.Parse(bitNumber);
+            _config.DataBitsCount = int.Parse(bitNumber);
         }
 
         private void StopBitDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,20 +113,20 @@ namespace RS_232
             string? selectedStopBits = ((ComboBoxItem)StopBitDropdown.SelectedItem)?.Content?.ToString();
             switch (selectedStopBits) 
             { 
-                case "One":
-                    _params.StopBits = StopBits.One;
+                case "1":
+                    _config.StopBits = StopBits.One;
                     break;
                     
-                case "Two":
-                    _params.StopBits = StopBits.Two;
+                case "2":
+                    _config.StopBits = StopBits.Two;
                     break;
                     
-                case "OnePointFive":
-                    _params.StopBits = StopBits.OnePointFive;
+                case "1.5":
+                    _config.StopBits = StopBits.OnePointFive;
                     break;
 
                 default:
-                    _params.StopBits = StopBits.None;
+                    _config.StopBits = StopBits.None;
                     break;
             }            
         }
@@ -112,19 +137,19 @@ namespace RS_232
             switch (selectedParity)
             {
                 case "None":
-                    _params.Parity = Parity.None;
+                    _config.Parity = Parity.None;
                     break;
 
                 case "Odd":
-                    _params.Parity = Parity.Odd;
+                    _config.Parity = Parity.Odd;
                     break;
 
                 case "Even":
-                    _params.Parity = Parity.Even;
+                    _config.Parity = Parity.Even;
                     break;
 
                 default:
-                    _params.Parity = Parity.None;
+                    _config.Parity = Parity.None;
                     break;
             }
         }
@@ -134,7 +159,7 @@ namespace RS_232
             string? baundRate = ((ComboBoxItem)BitNumberDropdown.SelectedItem)?.Content?.ToString();
             if(baundRate is null)
                 return;
-            _params.BaudRateInBps = int.Parse(baundRate.Split(" ").ElementAt(0));
+            _config.BaudRateInBps = int.Parse(baundRate.Split(" ").ElementAt(0));
         }
 
         private void FlowControlDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -143,23 +168,23 @@ namespace RS_232
             switch (selectedFlow)
             {
                 case "None":
-                    _params.Handshake = Handshake.None;
+                    _config.Handshake = Handshake.None;
                     break;
 
                 case "XOnXOff":
-                    _params.Handshake = Handshake.XOnXOff;
+                    _config.Handshake = Handshake.XOnXOff;
                     break;
 
                 case "RequestToSend":
-                    _params.Handshake = Handshake.RequestToSend;
+                    _config.Handshake = Handshake.RequestToSend;
                     break;
 
                 case "RequestToSendXOnXOff":
-                    _params.Handshake = Handshake.RequestToSendXOnXOff;
+                    _config.Handshake = Handshake.RequestToSendXOnXOff;
                     break;
 
                 default:
-                    _params.Parity = Parity.None;
+                    _config.Parity = Parity.None;
                     break;
             }
         }

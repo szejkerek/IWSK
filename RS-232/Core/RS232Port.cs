@@ -29,18 +29,18 @@ public class RS232Port
     public RS232Port(RS232Params config, SerialDataReceivedEventHandler onRecievedData)
     {
         _config = config;
-        ConfigSerialPort(_config, onRecievedData);
+        ConfigSerialPort(_config);
+        _serialPort.DataReceived += onRecievedData;
     }
 
-    public void ConfigSerialPort(RS232Params config, SerialDataReceivedEventHandler onRecievedData)
+    public void ConfigSerialPort(RS232Params config)
     {
         _serialPort.PortName = config.Port;
         _serialPort.BaudRate = config.BaudRateInBps;
         _serialPort.DataBits = config.DataBitsCount;
         _serialPort.StopBits = config.StopBits;
         _serialPort.Handshake = config.Handshake;
-        _serialPort.Parity = config.Parity;
-        _serialPort.DataReceived += onRecievedData;
+        _serialPort.Parity = config.Parity;       
     }
 
     public bool OpenPort()
