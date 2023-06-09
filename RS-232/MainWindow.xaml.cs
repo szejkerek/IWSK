@@ -49,6 +49,7 @@ namespace RS_232
             InitializeComponent();
             AddPorts();
             PopulateMembers();
+            ChangeStateOfInputs(true);
 
            _port = new RS232Port(config: _config, SerialDataReceivedEvent);
 
@@ -79,8 +80,13 @@ namespace RS_232
             TerminalMsg("===================\n");
         }
 
-        void TerminalMsg(string msg)
+        void TerminalMsg(string msg, bool addTimestamp = false)
         {
+            if (addTimestamp)
+            {
+                string timestamp = DateTime.Now.ToString("<HH:mm:ss> ");
+                TerminalTextbox.Text += timestamp;
+            }
             TerminalTextbox.Text += msg;
         }
         void ChangeStateOfInputs(bool enable)
@@ -91,6 +97,8 @@ namespace RS_232
             ParityDropdown.IsEnabled = enable;
             BaudRateDropdown.IsEnabled = enable;
             FlowControlDropdown.IsEnabled = enable;
+            SendCommandButton.IsEnabled = !enable;
+            CommandLine.IsEnabled = !enable;
         }
 
         #region UI
@@ -99,7 +107,7 @@ namespace RS_232
         {           
             if(_port.ReadData(out string data))
             {
-                TerminalTextbox.Text += data;
+                TerminalMsg(data);
             }
         }
 
@@ -113,6 +121,8 @@ namespace RS_232
             CloseButton.Visibility = Visibility.Visible;
             OpenButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: false);
+
+            TerminalMsg($"Opening....\n");
             if (!_port.OpenPort())
             {
                 TerminalMsg("ERROR OPENING PORT\n");
@@ -127,14 +137,13 @@ namespace RS_232
             OpenButton.Visibility = Visibility.Visible;
             CloseButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: true);
-            TerminalMsg($"Closing....\n");
 
+            TerminalMsg($"Closing....\n");
             if (!_port.ClosePort())
             {
                 TerminalMsg("ERROR CLOSING PORT\n");
                 return;
             }
-
             TerminalMsg($"Closed port {_config.Port}\n");
         }
 
@@ -240,7 +249,7 @@ namespace RS_232
             }
         }
 
-        private void TextboxTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ComandLine_TextChanged(object sender, TextChangedEventArgs e)
         {
             //komand
             
