@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,13 +49,14 @@ namespace RS_232
         public delegate void NewMessageEventHandle(string message);
         public event NewMessageEventHandle NewMessageEvent;
         private SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private Stopwatch _cmdStopwatch = new Stopwatch();
 
         public MainWindow()
         {
             InitDefaultConfig();
             _port = new RS232Port(config: _config, SerialDataReceivedEvent);
             NewMessageEvent += OnMessageReceived;
-
+            
             InitializeComponent();
             AddPorts();
             PopulateMembers();
@@ -78,14 +81,14 @@ namespace RS_232
 
         void ShowPortInfo()
         {
-            TerminalMsg("==== Open port ====\n");
-            TerminalMsg($"Port name: {_config.Port}\n");
-            TerminalMsg($"Baud rate: {_config.BaudRateInBps}bits/s\n");
-            TerminalMsg($"Data bits: {_config.DataBitsCount}\n");
-            TerminalMsg($"Stop bits: {_config.StopBits}\n");
-            TerminalMsg($"Handshake: {_config.Handshake}\n");
-            TerminalMsg($"Parity: {_config.Parity}\n");
-            TerminalMsg("===================\n");
+            TerminalMsg("==== Open port ====");
+            TerminalMsg($"Port name: {_config.Port}");
+            TerminalMsg($"Baud rate: {_config.BaudRateInBps}bits/s");
+            TerminalMsg($"Data bits: {_config.DataBitsCount}");
+            TerminalMsg($"Stop bits: {_config.StopBits}");
+            TerminalMsg($"Handshake: {_config.Handshake}");
+            TerminalMsg($"Parity: {_config.Parity}");
+            TerminalMsg("===================");
         }
 
         void TerminalMsg(string msg, bool addTimestamp = false)
@@ -97,6 +100,11 @@ namespace RS_232
             }
 
             TerminalTextbox.Text += msg;
+
+            if(msg.ElementAt(msg.Length - 1) != '\n')
+            {
+                TerminalTextbox.Text += "\n";
+            }
         }
         void ChangeStateOfInputs(bool enable)
         {
@@ -129,6 +137,19 @@ namespace RS_232
         private void OnMessageReceived(string message)
         {
             TerminalMsg($"Received message: {message}", addTimestamp: true);
+
+            if (message == $"PONG{Terminator[_terminator]}")
+            {
+                _cmdStopwatch.Stop();
+                TerminalMsg($"PONG received after {_cmdStopwatch.ElapsedMilliseconds}ms");
+
+                return;
+            }
+
+            if(message == $"PING{Terminator[_terminator]}")
+            {
+                _port.SendData($"PONG{Terminator[_terminator]}");
+            }
         }
 
         private void SendCommandButton_Click(object sender, RoutedEventArgs e)
@@ -137,21 +158,26 @@ namespace RS_232
                 return;
 
             string data = CommandLine.Text;
-            if (!_port.SendData(data))
+            if (!_port.SendData(data + Terminator[_terminator]))
             {
-                TerminalMsg("Failed to send message\n", addTimestamp: true);
+                TerminalMsg("Failed to send message", addTimestamp: true);
                 return;
             }
 
-            TerminalMsg($"Message sent: {data}\n", addTimestamp: true);
+            if(data.Equals("PING"))
+            {
+                _cmdStopwatch.Restart();
+            }
+
+            TerminalMsg($"Message sent: {data + Terminator[_terminator]}", addTimestamp: true);
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            TerminalMsg($"Opening....\n");
+            TerminalMsg($"Opening....");
             if (!_port.OpenPort())
             {
-                TerminalMsg("ERROR OPENING PORT\n");
+                TerminalMsg("ERROR OPENING PORT");
                 return;
             }
 
@@ -163,17 +189,17 @@ namespace RS_232
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            TerminalMsg($"Closing....\n");
+            TerminalMsg($"Closing....");
             if (!_port.ClosePort())
             {
-                TerminalMsg("ERROR CLOSING PORT\n");
+                TerminalMsg("ERROR CLOSING PORT");
                 return;
             }
 
             OpenButton.Visibility = Visibility.Visible;
             CloseButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: true);
-            TerminalMsg($"Closed port {_config.Port}\n");
+            TerminalMsg($"Closed port {_config.Port}");
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -314,7 +340,6 @@ namespace RS_232
             }
             TerminatorTextblock.Visibility = Visibility.Hidden;
             TerminatorTextbox.Visibility = Visibility.Hidden;
-            UpdatePort();
         }
 
         private void TerminatorTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -326,7 +351,6 @@ namespace RS_232
                 TerminatorTextbox.CaretIndex = caretIndex > 2 ? 2 : caretIndex;
             }
             Terminator[TerminatorType.Custom] = TerminatorTextbox.Text;
-            UpdatePort();
         }
 
 
