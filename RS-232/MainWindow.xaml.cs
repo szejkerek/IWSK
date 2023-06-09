@@ -70,11 +70,19 @@ namespace RS_232
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             ChangeStateOfInputs(enable: false);
+            if (!_port.OpenPort())
+            {
+                TerminalTextbox.Text += "ERROR OPENING PORT\n";
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             ChangeStateOfInputs(enable: true);
+            if (!_port.ClosePort())
+            {
+                TerminalTextbox.Text += "ERROR CLOSING PORT\n";
+            }
         }
 
         void ChangeStateOfInputs(bool enable)

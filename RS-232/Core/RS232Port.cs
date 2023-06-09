@@ -18,7 +18,8 @@ public class RS232Port
 {
     RS232Params _config;
     SerialPort _serialPort = new SerialPort();
-    Stopwatch _stopwatch = new Stopwatch(); 
+    Stopwatch _stopwatch = new Stopwatch();
+    SerialDataReceivedEventHandler _onRecievedData;
     public bool IsOpen  => _serialPort.IsOpen; 
 
     public static string[] GetAvailablePorts()
@@ -29,8 +30,8 @@ public class RS232Port
     public RS232Port(RS232Params config, SerialDataReceivedEventHandler onRecievedData)
     {
         _config = config;
+        _onRecievedData = onRecievedData;
         ConfigSerialPort(_config);
-        _serialPort.DataReceived += onRecievedData;
     }
 
     public void ConfigSerialPort(RS232Params config)
@@ -47,6 +48,7 @@ public class RS232Port
     {
         try
         {
+            _serialPort.DataReceived += _onRecievedData;
             _serialPort.Open();
             return true;
         }
@@ -59,6 +61,7 @@ public class RS232Port
     {
         try
         {
+            _serialPort.DataReceived -= _onRecievedData;
             _serialPort.Close();
             return true;
         }
