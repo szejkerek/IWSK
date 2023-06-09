@@ -10,7 +10,8 @@
         MinHeight="740"
         MinWidth="720"
         Background="White"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Border Opacity="0.7">
             <Border.Background>
@@ -235,7 +236,7 @@
                                     Width="100"
                                     Content="Send"
                                     FontSize="13"
-                                    Click="SendCommandButtonOnClick">
+                                    Click="SendCommandButton_Click">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="5"/>
