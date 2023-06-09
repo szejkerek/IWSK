@@ -392,5 +392,14 @@ namespace RS_232
                 terminalImageBrush.ImageSource = new BitmapImage(new Uri("../../../Resources/juda.jpg", UriKind.RelativeOrAbsolute));
             }
         }
+
+        private void PART_ContentHost_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            ScrollViewer scrollViewer = (ScrollViewer)sender;
+            if (e.ExtentHeightChange != 0)
+            {
+                scrollViewer.ScrollToEnd();
+            }
+        }
     }
 }
