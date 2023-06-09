@@ -64,6 +64,11 @@
                                             <Border x:Name="border"
                                                     BorderThickness="0"
                                                     BorderBrush="Transparent">
+                                                <Border.Background>
+                                                    <ImageBrush x:Name="TerminalImage"
+                                                                
+                                                                Stretch="Fill" />
+                                                </Border.Background>
                                                 <ScrollViewer x:Name="PART_ContentHost"
                                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                             </Border>
@@ -270,5 +275,18 @@
 
             </StackPanel>
         </Grid>
+        <Button Height="30"
+                Width="60"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="10"
+                Content="Help"
+                Click="Button_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
 </Window>
