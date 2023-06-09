@@ -173,8 +173,9 @@
                                 <Button Name="OpenButton"                                   
                                         Height="30"
                                         Width="100"
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="Center"
                                         Content="Open port"
+                                        Background="#a5e396"
                                         Click="OpenButton_Click">
                                     <Button.Resources>
                                         <Style TargetType="Border">
@@ -183,11 +184,12 @@
                                     </Button.Resources>
                                 </Button>
                                 <Button Name="CloseButton"   
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="Center"
                                         Height="30"                                    
                                         Width="100"
                                         Content="Close port"
                                         Click="CloseButton_Click"
+                                        Background="#db76bd"
                                         Visibility="Hidden">
                                     <Button.Resources>
                                         <Style TargetType="Border">
