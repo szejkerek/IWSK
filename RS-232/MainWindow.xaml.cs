@@ -46,13 +46,24 @@ namespace RS_232
 
         public MainWindow()
         {
+            InitDefaultConfig();
+            _port = new RS232Port(config: _config, SerialDataReceivedEvent);
+
+
             InitializeComponent();
             AddPorts();
             PopulateMembers();
             ChangeStateOfInputs(true);
+        }
 
-           _port = new RS232Port(config: _config, SerialDataReceivedEvent);
-
+        private void InitDefaultConfig()
+        {
+            _config.Port = RS232Port.GetAvailablePorts().ElementAt(0);
+            _config.DataBitsCount = 7;
+            _config.StopBits = StopBits.One;
+            _config.Parity = Parity.Odd;
+            _config.BaudRateInBps = 110;
+            _config.Handshake = Handshake.XOnXOff;
         }
 
         private void AddPorts()
@@ -77,7 +88,7 @@ namespace RS_232
         {
             if (addTimestamp)
             {
-                string timestamp = DateTime.Now.ToString("<HH:mm:ss> ");
+                string timestamp = "x ";/*DateTime.Now.ToString("<HH:mm:ss> ");*/
                 TerminalTextbox.Text += timestamp;
             }
             TerminalTextbox.Text += msg;
@@ -92,6 +103,11 @@ namespace RS_232
             FlowControlDropdown.IsEnabled = enable;
             SendCommandButton.IsEnabled = !enable;
             CommandLine.IsEnabled = !enable;
+        }
+
+        void UpdatePort()
+        {
+           _port.ConfigSerialPort(config: _config);
         }
 
         #region UI
@@ -164,6 +180,7 @@ namespace RS_232
             if (port is null)
                 return;
             _config.Port = port;
+            UpdatePort();
         }
 
         private void BitNumberDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,6 +189,7 @@ namespace RS_232
             if (bitNumber is null)
                 return;
             _config.DataBitsCount = int.Parse(bitNumber);
+            UpdatePort();
         }
 
         private void StopBitDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -192,9 +210,10 @@ namespace RS_232
                     break;
 
                 default:
-                    _config.StopBits = StopBits.None;
+                    _config.StopBits = StopBits.One;
                     break;
-            }            
+            }
+            UpdatePort();
         }
 
         private void ParityDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -215,9 +234,10 @@ namespace RS_232
                     break;
 
                 default:
-                    _config.Parity = Parity.None;
+                    _config.Parity = Parity.Odd;
                     break;
             }
+            UpdatePort();
         }
 
         private void BaudRateDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,6 +246,7 @@ namespace RS_232
             if(baundRate is null)
                 return;
             _config.BaudRateInBps = int.Parse(baundRate.Split(" ").ElementAt(0));
+            UpdatePort();
         }
 
         private void FlowControlDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -250,9 +271,10 @@ namespace RS_232
                     break;
 
                 default:
-                    _config.Parity = Parity.None;
+                    _config.Handshake = Handshake.XOnXOff;
                     break;
             }
+            UpdatePort();
         }
 
         private void TerminatorDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -285,6 +307,7 @@ namespace RS_232
             }
             TerminatorTextblock.Visibility = Visibility.Hidden;
             TerminatorTextbox.Visibility = Visibility.Hidden;
+            UpdatePort();
         }
 
         private void TerminatorTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -296,6 +319,7 @@ namespace RS_232
                 TerminatorTextbox.CaretIndex = caretIndex > 2 ? 2 : caretIndex;
             }
             Terminator[TerminatorType.Custom] = TerminatorTextbox.Text;
+            UpdatePort();
         }
 
 

@@ -52,8 +52,9 @@ public class RS232Port
             _serialPort.Open();
             return true;
         }
-        catch (Exception)
-        {
+        catch (Exception e)
+        {         
+            Console.WriteLine(e.ToString());
             return false;
         }    
     }
