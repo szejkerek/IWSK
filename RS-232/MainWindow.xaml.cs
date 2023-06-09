@@ -49,6 +49,7 @@ namespace RS_232
             InitializeComponent();
             AddPorts();
             PopulateMembers();
+            ChangeStateOfInputs(true);
 
            _port = new RS232Port(config: _config, SerialDataReceivedEvent);
 
@@ -96,6 +97,8 @@ namespace RS_232
             ParityDropdown.IsEnabled = enable;
             BaudRateDropdown.IsEnabled = enable;
             FlowControlDropdown.IsEnabled = enable;
+            SendCommandButton.IsEnabled = !enable;
+            CommandLine.IsEnabled = !enable;
         }
 
         #region UI
@@ -246,7 +249,7 @@ namespace RS_232
             }
         }
 
-        private void TextboxTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ComandLine_TextChanged(object sender, TextChangedEventArgs e)
         {
             //komand
             

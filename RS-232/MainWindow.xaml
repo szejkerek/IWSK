@@ -214,7 +214,7 @@
                             </ComboBox>
                             <TextBlock Text="Command"
                                        Margin="0, 10, 0, 0"/>
-                            <TextBox x:Name="TextboxTextbox"
+                            <TextBox x:Name="CommandLine"
                                      Height="45"
                                      HorizontalAlignment="Left"
                                      VerticalContentAlignment="Center"
@@ -224,7 +224,7 @@
                                      Grid.Column="1"
                                      FontFamily="Comic Sans MS"
                                      Width="{Binding ActualWidth, ElementName=Panel}"
-                                     TextChanged="TextboxTextbox_TextChanged"/>
+                                     TextChanged="ComandLine_TextChanged"/>
                             <Button x:Name="SendCommandButton"
                                     Margin="0, 10, 0, 0"
                                     Height="30"
