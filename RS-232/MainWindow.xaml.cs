@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,13 +43,16 @@ namespace RS_232
             { TerminatorType.Custom, ""},
         };
         private TerminatorType _terminator;
-        
+
+        public delegate void NewMessageEventHandle(string message);
+        public event NewMessageEventHandle NewMessageEvent;
+        private SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
         public MainWindow()
         {
             InitDefaultConfig();
             _port = new RS232Port(config: _config, SerialDataReceivedEvent);
-
+            NewMessageEvent += OnMessageReceived;
 
             InitializeComponent();
             AddPorts();
@@ -88,9 +92,10 @@ namespace RS_232
         {
             if (addTimestamp)
             {
-                string timestamp = "x ";/*DateTime.Now.ToString("<HH:mm:ss> ");*/
+                string timestamp = DateTime.Now.ToString("<HH:mm:ss> ");
                 TerminalTextbox.Text += timestamp;
             }
+
             TerminalTextbox.Text += msg;
         }
         void ChangeStateOfInputs(bool enable)
@@ -116,12 +121,13 @@ namespace RS_232
         {           
             if(_port.ReadData(out string data))
             {
-                TerminalMsg($"Received message: {data}", addTimestamp: true);
+                synchronizationContext.Post(_ => NewMessageEvent?.Invoke(data), null);
             }
-            else
-            {
-                TerminalMsg("Failed to read message\n", addTimestamp: true);
-            }
+        }
+
+        private void OnMessageReceived(string message)
+        {
+            TerminalMsg($"Received message: {message}", addTimestamp: true);
         }
 
         private void SendCommandButton_Click(object sender, RoutedEventArgs e)
