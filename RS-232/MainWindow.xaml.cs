@@ -61,13 +61,6 @@ namespace RS_232
             PortDropdown.SelectedIndex = 0;
         }
 
-        //public string Port;
-        //public int BaudRateInBps;
-        //public int DataBitsCount;
-        //public StopBits StopBits;
-        //public Handshake Handshake;
-        //public Parity Parity;
-
         void ShowPortInfo()
         {
             TerminalMsg("==== Open port ====\n");
@@ -113,7 +106,15 @@ namespace RS_232
 
         private void SendCommandButton_Click(object sender, RoutedEventArgs e)
         {
+            if(CommandLine.Text.Equals(string.Empty))
+                return;
 
+            string data = CommandLine.Text;
+            if (!_port.SendData(data))
+            {
+                TerminalMsg("Failed to send message\n", addTimestamp: true);
+                return;
+            }    
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -247,12 +248,6 @@ namespace RS_232
                     _config.Parity = Parity.None;
                     break;
             }
-        }
-
-        private void ComandLine_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //komand
-            
         }
 
         private void TerminatorDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
