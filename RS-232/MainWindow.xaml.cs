@@ -69,6 +69,7 @@ namespace RS_232
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
+            CloseButton.IsChecked = false;
             ChangeStateOfInputs(enable: false);
             if (!_port.OpenPort())
             {
@@ -78,6 +79,7 @@ namespace RS_232
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            OpenButton.IsChecked = false;
             ChangeStateOfInputs(enable: true);
             if (!_port.ClosePort())
             {
