@@ -61,9 +61,13 @@ public class RS232Port
     {
         try
         {
-            _serialPort.DataReceived -= _onRecievedData;
-            _serialPort.Close();
-            return true;
+            if(_serialPort.IsOpen)
+            {
+                _serialPort.DataReceived -= _onRecievedData;
+                _serialPort.Close();
+                return true;
+            }
+            return false;
         }
         catch (Exception)
         {

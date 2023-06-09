@@ -70,6 +70,7 @@ namespace RS_232
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             ChangeStateOfInputs(enable: false);
+            RS232Params xd = _config;
             if (!_port.OpenPort())
             {
                 TerminalTextbox.Text += "ERROR OPENING PORT\n";
@@ -164,7 +165,7 @@ namespace RS_232
 
         private void BaudRateDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string? baundRate = ((ComboBoxItem)BitNumberDropdown.SelectedItem)?.Content?.ToString();
+            string? baundRate = ((ComboBoxItem)BaudRateDropdown.SelectedItem)?.Content?.ToString();
             if(baundRate is null)
                 return;
             _config.BaudRateInBps = int.Parse(baundRate.Split(" ").ElementAt(0));
@@ -259,6 +260,7 @@ namespace RS_232
             StopBitDropdown_SelectionChanged(null, null);
             ParityDropdown_SelectionChanged(null, null);
             TerminatorDropdown_SelectionChanged(null, null);
+            BaudRateDropdown_SelectionChanged(null, null);
         }
     }
 }
