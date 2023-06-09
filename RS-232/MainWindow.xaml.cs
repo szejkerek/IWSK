@@ -99,7 +99,7 @@ namespace RS_232
         {           
             if(_port.ReadData(out string data))
             {
-                TerminalTextbox.Text += data;
+                TerminalMsg(data);
             }
         }
 
