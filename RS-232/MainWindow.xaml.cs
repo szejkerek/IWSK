@@ -79,8 +79,13 @@ namespace RS_232
             TerminalMsg("===================\n");
         }
 
-        void TerminalMsg(string msg)
+        void TerminalMsg(string msg, bool addTimestamp = false)
         {
+            if (addTimestamp)
+            {
+                string timestamp = DateTime.Now.ToString("<HH:mm:ss> ");
+                TerminalTextbox.Text += timestamp;
+            }
             TerminalTextbox.Text += msg;
         }
         void ChangeStateOfInputs(bool enable)
@@ -113,6 +118,8 @@ namespace RS_232
             CloseButton.Visibility = Visibility.Visible;
             OpenButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: false);
+
+            TerminalMsg($"Opening....\n");
             if (!_port.OpenPort())
             {
                 TerminalMsg("ERROR OPENING PORT\n");
@@ -127,14 +134,13 @@ namespace RS_232
             OpenButton.Visibility = Visibility.Visible;
             CloseButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: true);
-            TerminalMsg($"Closing....\n");
 
+            TerminalMsg($"Closing....\n");
             if (!_port.ClosePort())
             {
                 TerminalMsg("ERROR CLOSING PORT\n");
                 return;
             }
-
             TerminalMsg($"Closed port {_config.Port}\n");
         }
 
