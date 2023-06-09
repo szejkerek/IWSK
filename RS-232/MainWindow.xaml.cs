@@ -66,7 +66,7 @@ namespace RS_232
             _config.DataBitsCount = 7;
             _config.StopBits = StopBits.One;
             _config.Parity = Parity.Odd;
-            _config.BaudRateInBps = 110;
+            _config.BaudRateInBps = 9600;
             _config.Handshake = Handshake.XOnXOff;
         }
 
@@ -80,7 +80,7 @@ namespace RS_232
         {
             TerminalMsg("==== Open port ====\n");
             TerminalMsg($"Port name: {_config.Port}\n");
-            TerminalMsg($"Baud rate: {_config.BaudRateInBps}\n");
+            TerminalMsg($"Baud rate: {_config.BaudRateInBps}bits/s\n");
             TerminalMsg($"Data bits: {_config.DataBitsCount}\n");
             TerminalMsg($"Stop bits: {_config.StopBits}\n");
             TerminalMsg($"Handshake: {_config.Handshake}\n");
