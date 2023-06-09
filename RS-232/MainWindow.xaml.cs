@@ -100,7 +100,11 @@ namespace RS_232
         {           
             if(_port.ReadData(out string data))
             {
-                TerminalMsg(data);
+                TerminalMsg($"Received message: {data}", addTimestamp: true);
+            }
+            else
+            {
+                TerminalMsg("Failed to read message\n", addTimestamp: true);
             }
         }
 
@@ -114,15 +118,13 @@ namespace RS_232
             {
                 TerminalMsg("Failed to send message\n", addTimestamp: true);
                 return;
-            }    
+            }
+
+            TerminalMsg($"Message sent: {data}\n", addTimestamp: true);
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseButton.Visibility = Visibility.Visible;
-            OpenButton.Visibility = Visibility.Hidden;
-            ChangeStateOfInputs(enable: false);
-
             TerminalMsg($"Opening....\n");
             if (!_port.OpenPort())
             {
@@ -130,21 +132,24 @@ namespace RS_232
                 return;
             }
 
+            CloseButton.Visibility = Visibility.Visible;
+            OpenButton.Visibility = Visibility.Hidden;
+            ChangeStateOfInputs(enable: false);
             ShowPortInfo();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenButton.Visibility = Visibility.Visible;
-            CloseButton.Visibility = Visibility.Hidden;
-            ChangeStateOfInputs(enable: true);
-
             TerminalMsg($"Closing....\n");
             if (!_port.ClosePort())
             {
                 TerminalMsg("ERROR CLOSING PORT\n");
                 return;
             }
+
+            OpenButton.Visibility = Visibility.Visible;
+            CloseButton.Visibility = Visibility.Hidden;
+            ChangeStateOfInputs(enable: true);
             TerminalMsg($"Closed port {_config.Port}\n");
         }
 
