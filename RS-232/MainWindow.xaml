@@ -156,13 +156,13 @@
                             <ComboBox Name="BaudRateDropdown"
                                       Margin="0, 0, 0, 15"
                                       SelectionChanged="BaudRateDropdown_SelectionChanged">
-                                <ComboBoxItem IsSelected="True">110 bits/s</ComboBoxItem>
+                                <ComboBoxItem>110 bits/s</ComboBoxItem>
                                 <ComboBoxItem>300 bits/s</ComboBoxItem>
                                 <ComboBoxItem>600 bits/s</ComboBoxItem>
                                 <ComboBoxItem>1200 bits/s</ComboBoxItem>
                                 <ComboBoxItem>2400 bits/s</ComboBoxItem>
                                 <ComboBoxItem>4800 bits/s</ComboBoxItem>
-                                <ComboBoxItem>9600 bits/s</ComboBoxItem>
+                                <ComboBoxItem IsSelected="True">9600 bits/s</ComboBoxItem>
                                 <ComboBoxItem>14400 bits/s</ComboBoxItem>
                                 <ComboBoxItem>19200 bits/s</ComboBoxItem>
                                 <ComboBoxItem>38400 bits/s</ComboBoxItem>
