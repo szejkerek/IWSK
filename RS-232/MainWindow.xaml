@@ -55,7 +55,8 @@
                              Background="Transparent"
                              BorderBrush="Transparent"
                              Opacity="0.9"
-                             FontFamily="Comic Sans MS">
+                             FontFamily="Comic Sans MS"
+                             TextAlignment="Center">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Setter Property="Template">
