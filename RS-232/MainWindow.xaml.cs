@@ -62,13 +62,14 @@ namespace RS_232
             }
         }
 
-        private void SendCommandButtonOnClick(object sender, RoutedEventArgs e)
+        private void SendCommandButton_Click(object sender, RoutedEventArgs e)
         {
-
+            TerminalTextbox.Text = "saddddddddddd";
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
+            CloseButton.IsChecked = false;
             ChangeStateOfInputs(enable: false);
             RS232Params xd = _config;
             if (!_port.OpenPort())
@@ -79,6 +80,7 @@ namespace RS_232
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            OpenButton.IsChecked = false;
             ChangeStateOfInputs(enable: true);
             if (!_port.ClosePort())
             {
@@ -98,7 +100,7 @@ namespace RS_232
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            TerminatorTextbox.Clear();
+            TerminalTextbox.Clear();
         }
 
         private void PortDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -261,6 +263,14 @@ namespace RS_232
             ParityDropdown_SelectionChanged(null, null);
             TerminatorDropdown_SelectionChanged(null, null);
             BaudRateDropdown_SelectionChanged(null, null);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SendCommandButton_Click(null, null);
+            }
         }
     }
 }
