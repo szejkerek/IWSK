@@ -180,7 +180,7 @@
                                 <Button Name="OpenButton"                                   
                                         Height="30"
                                         Width="100"
-                                        HorizontalAlignment="Center"
+                                        HorizontalAlignment="Left"
                                         Content="Open port"
                                         Background="#a5e396"
                                         Click="OpenButton_Click">
@@ -191,13 +191,25 @@
                                     </Button.Resources>
                                 </Button>
                                 <Button Name="CloseButton"   
-                                        HorizontalAlignment="Center"
+                                        HorizontalAlignment="Left"
                                         Height="30"                                    
                                         Width="100"
                                         Content="Close port"
                                         Click="CloseButton_Click"
                                         Background="#db76bd"
                                         Visibility="Hidden">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                                <Button Name="ScanPortButton"   
+                                        HorizontalAlignment="Right"
+                                        Height="30"                                    
+                                        Width="100"
+                                        Content="Scan ports"
+                                        Click="ScanPortButton_Click">
                                     <Button.Resources>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="5"/>

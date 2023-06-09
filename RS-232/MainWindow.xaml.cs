@@ -108,6 +108,7 @@ namespace RS_232
             FlowControlDropdown.IsEnabled = enable;
             SendCommandButton.IsEnabled = !enable;
             CommandLine.IsEnabled = !enable;
+            ScanPortButton.IsEnabled = enable;
         }
 
         void UpdatePort()
@@ -367,6 +368,12 @@ namespace RS_232
                 // Example: Set the image source of the ImageBrush
                 terminalImageBrush.ImageSource = new BitmapImage(new Uri("../../../Resources/juda.jpg", UriKind.RelativeOrAbsolute));
             }
+        }
+
+
+        private void ScanPortButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddPorts();
         }
 
         private void PART_ContentHost_ScrollChanged(object sender, ScrollChangedEventArgs e)
