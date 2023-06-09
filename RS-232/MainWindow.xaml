@@ -71,7 +71,8 @@
                                                                 Stretch="Fill" />
                                                 </Border.Background>
                                                 <ScrollViewer x:Name="PART_ContentHost"
-                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                              ScrollChanged="PART_ContentHost_ScrollChanged"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsFocused" Value="True">
