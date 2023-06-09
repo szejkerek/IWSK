@@ -170,37 +170,31 @@
                             <Grid Width="{Binding ActualWidth, ElementName=BitNumberDropdown}"
                                   HorizontalAlignment="Left"
                                   Margin="0, 15, 0, 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <ToggleButton Name="OpenButton"                                   
-                                        Grid.Column="0"
+                                <Button Name="OpenButton"                                   
                                         Height="30"
                                         Width="100"
                                         HorizontalAlignment="Left"
                                         Content="Open port"
                                         Click="OpenButton_Click">
-                                    <ToggleButton.Resources>
+                                    <Button.Resources>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="5"/>
                                         </Style>
-                                    </ToggleButton.Resources>
-                                </ToggleButton>
-                                <ToggleButton Name="CloseButton"
-                                        Grid.Column="1"   
-                                        HorizontalAlignment="Right"
+                                    </Button.Resources>
+                                </Button>
+                                <Button Name="CloseButton"   
+                                        HorizontalAlignment="Left"
                                         Height="30"                                    
                                         Width="100"
                                         Content="Close port"
                                         Click="CloseButton_Click"
-                                              IsChecked="True">
-                                    <ToggleButton.Resources>
+                                        Visibility="Hidden">
+                                    <Button.Resources>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="5"/>
                                         </Style>
-                                    </ToggleButton.Resources>
-                                </ToggleButton>
+                                    </Button.Resources>
+                                </Button>
                             </Grid>
                            
                             <TextBlock Text="Przepływ"

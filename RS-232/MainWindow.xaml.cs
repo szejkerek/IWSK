@@ -110,7 +110,8 @@ namespace RS_232
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseButton.IsChecked = false;
+            CloseButton.Visibility = Visibility.Visible;
+            OpenButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: false);
             if (!_port.OpenPort())
             {
@@ -123,7 +124,8 @@ namespace RS_232
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenButton.IsChecked = false;
+            OpenButton.Visibility = Visibility.Visible;
+            CloseButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: true);
             TerminalMsg($"Closing....\n");
 
