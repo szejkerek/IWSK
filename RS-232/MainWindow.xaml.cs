@@ -54,6 +54,47 @@ namespace RS_232
 
         }
 
+        private void AddPorts()
+        {
+            PortDropdown.ItemsSource = RS232Port.GetAvailablePorts();
+            PortDropdown.SelectedIndex = 0;
+        }
+
+        //public string Port;
+        //public int BaudRateInBps;
+        //public int DataBitsCount;
+        //public StopBits StopBits;
+        //public Handshake Handshake;
+        //public Parity Parity;
+
+        void ShowPortInfo()
+        {
+            TerminalMsg("==== Open port ====\n");
+            TerminalMsg($"Port name: {_config.Port}\n");
+            TerminalMsg($"Baud rate: {_config.BaudRateInBps}\n");
+            TerminalMsg($"Data bits: {_config.DataBitsCount}\n");
+            TerminalMsg($"Stop bits: {_config.StopBits}\n");
+            TerminalMsg($"Handshake: {_config.Handshake}\n");
+            TerminalMsg($"Parity: {_config.Parity}\n");
+            TerminalMsg("===================\n");
+        }
+
+        void TerminalMsg(string msg)
+        {
+            TerminalTextbox.Text += msg;
+        }
+        void ChangeStateOfInputs(bool enable)
+        {
+            PortDropdown.IsEnabled = enable;
+            BitNumberDropdown.IsEnabled = enable;
+            StopBitDropdown.IsEnabled = enable;
+            ParityDropdown.IsEnabled = enable;
+            BaudRateDropdown.IsEnabled = enable;
+            FlowControlDropdown.IsEnabled = enable;
+        }
+
+        #region UI
+
         void SerialDataReceivedEvent(object sender, SerialDataReceivedEventArgs e)
         {           
             if(_port.ReadData(out string data))
@@ -64,7 +105,7 @@ namespace RS_232
 
         private void SendCommandButton_Click(object sender, RoutedEventArgs e)
         {
-            TerminalTextbox.Text = "saddddddddddd";
+
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -72,11 +113,13 @@ namespace RS_232
             CloseButton.Visibility = Visibility.Visible;
             OpenButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: false);
-            RS232Params xd = _config;
             if (!_port.OpenPort())
             {
-                TerminalTextbox.Text += "ERROR OPENING PORT\n";
+                TerminalMsg("ERROR OPENING PORT\n");
+                return;
             }
+
+            ShowPortInfo();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -84,20 +127,15 @@ namespace RS_232
             OpenButton.Visibility = Visibility.Visible;
             CloseButton.Visibility = Visibility.Hidden;
             ChangeStateOfInputs(enable: true);
+            TerminalMsg($"Closing....\n");
+
             if (!_port.ClosePort())
             {
-                TerminalTextbox.Text += "ERROR CLOSING PORT\n";
+                TerminalMsg("ERROR CLOSING PORT\n");
+                return;
             }
-        }
 
-        void ChangeStateOfInputs(bool enable)
-        {
-            PortDropdown.IsEnabled = enable;
-            BitNumberDropdown.IsEnabled = enable;
-            StopBitDropdown.IsEnabled = enable;
-            ParityDropdown.IsEnabled = enable;
-            BaudRateDropdown.IsEnabled = enable;
-            FlowControlDropdown.IsEnabled = enable;
+            TerminalMsg($"Closed port {_config.Port}\n");
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -251,11 +289,7 @@ namespace RS_232
             Terminator[TerminatorType.Custom] = TerminatorTextbox.Text;
         }
 
-        private void AddPorts()
-        {
-            PortDropdown.ItemsSource = RS232Port.GetAvailablePorts();
-            PortDropdown.SelectedIndex = 0;
-        }
+
 
         private void PopulateMembers()
         {
@@ -274,5 +308,7 @@ namespace RS_232
                 SendCommandButton_Click(null, null);
             }
         }
+
+        #endregion
     }
 }
