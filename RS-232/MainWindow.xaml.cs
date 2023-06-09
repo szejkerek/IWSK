@@ -310,5 +310,24 @@ namespace RS_232
         }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ImageBrush terminalImageBrush = null;
+
+            // Find the TerminalImage element within the TextBox's visual tree
+            Border border = (Border)TerminalTextbox.Template.FindName("border", TerminalTextbox);
+            if (border != null)
+            {
+                terminalImageBrush = (ImageBrush)border.Background;
+            }
+
+            // Now you can use the terminalImageBrush for further operations
+            if (terminalImageBrush != null)
+            {
+                // Example: Set the image source of the ImageBrush
+                terminalImageBrush.ImageSource = new BitmapImage(new Uri("../../../Resources/juda.jpg", UriKind.RelativeOrAbsolute));
+            }
+        }
     }
 }
