@@ -66,7 +66,7 @@
                                                     BorderBrush="Transparent">
                                                 <Border.Background>
                                                     <ImageBrush x:Name="TerminalImage"
-                                                                
+                                                                Opacity="0.3"
                                                                 Stretch="Fill" />
                                                 </Border.Background>
                                                 <ScrollViewer x:Name="PART_ContentHost"
