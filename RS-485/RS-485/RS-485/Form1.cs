@@ -73,5 +73,15 @@ namespace RS_485
         {
 
         }
+
+        private void masterSendedHex_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
