@@ -59,6 +59,9 @@
     <Compile Include="ModbusMsg.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialInterfaceEvent.cs" />
+    <Compile Include="SerialInterfacePEvent.cs" />
+    <Compile Include="SerialInterfaceServer.cs" />
     <Compile Include="Slave.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
