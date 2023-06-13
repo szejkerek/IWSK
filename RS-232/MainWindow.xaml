@@ -296,7 +296,8 @@
                 HorizontalAlignment="Right"
                 Margin="10"
                 Content="Help"
-                Click="Button_Click">
+                Click="Button_Click"
+                Visibility="Hidden">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
